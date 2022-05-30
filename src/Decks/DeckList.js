@@ -30,7 +30,7 @@ function DeckList() {
             <button>View</button>
           </Link>
           <Link to={`/decks/${deck.id}/study`}>
-            <button>Create</button>
+            <button>Study</button>
           </Link>
           <button>Delete</button>
         </Card.Body>
