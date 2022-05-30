@@ -39,15 +39,19 @@ function Deck() {
       </Card.Body>
     </div>
   );
-
-  //set cardItems to the CardList component with the current deck being the prop
-  //I think this is where I am having the problem. If I add {cardItems} to the return after the deck is initially set it is no problem but if I reload the page breaks.
+  
+  /*My ideas was that calling this component would let me display the different cards in a deck. But it can't map because deck is undefined. 
+  If I reload the page and then add the code it works but then if I reload again it breaks. I think what is happening is the useEffect
+  isn't completing before I call this component*/
+  const cardItems = <CardList deck={deck}/>
+ 
 
   return (
     <div>
       {deckItem}
       <br></br>
       <h1>Cards</h1>
+      {cardItems}
     </div>
   );
 }
