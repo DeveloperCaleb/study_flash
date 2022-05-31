@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Route, Switch, Link } from "react-router-dom";
+import { Route, Switch, Link, useHistory } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import { deleteCard } from "../utils/api";
 
-function CardList({ deck }) {
-  //set initial hook
-  const [cards, setCards] = useState(deck.cards);
+function CardList({ cards, deckId }) {
+  const history = useHistory();
 
-  console.log(cards);
-
+  const handleClick = ({ target }) => {
+    deleteCard(target.id);
+    history.go(0);
+  };
   //Creates card element for every card.
   const cardList = cards.map((card) => {
     return (
-      <Card.Body>
+      <Card.Body key={cards.indexOf(card)}>
         <Card.Text>{card.front}</Card.Text>
         <Card.Text>{card.back}</Card.Text>
-        <Link to={`/decks/1/edit`}>
+        <Link to={`/decks/${deckId}/cards/${card.id}/edit`}>
           <button>Edit</button>
         </Link>
-        <button>Delete</button>
+        <button type="button" id={`${card.id}`} onClick={handleClick}>
+          Delete
+        </button>
       </Card.Body>
     );
   });

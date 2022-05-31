@@ -13,7 +13,7 @@
     {
       "id": 3,
       "name": "Test Deck",
-      "description": "This is just the first try at a test create a deck."
+      "description": "A deck for testing duh. I mean I can't blame you for not knowing. But I mean it is pretty obvious."
     }
   ],
   "cards": [
@@ -53,6 +53,24 @@
       "back": "b",
       "deckId": 1,
       "id": 7
+    },
+    {
+      "id": 8,
+      "front": "Front test 1",
+      "back": "Back test 1",
+      "deckId": 3
+    },
+    {
+      "id": 9,
+      "front": "Front test 2",
+      "back": "Back test 2 ",
+      "deckId": 3
+    },
+    {
+      "id": 10,
+      "front": "Test 3",
+      "back": "Test 3",
+      "deckId": 3
     }
   ]
 }

@@ -3,31 +3,30 @@ import { Link } from "react-router-dom";
 import { Route, Switch } from "react-router-dom";
 import { createDeck } from "../utils/api";
 
-function DeckForm() {
+function CreateDeckForm() {
   const initialRender = {
     id: "",
     name: "",
     description: "",
   };
 
-  const [formData, setFormData] = useState(initialRender);
+  const [deckFormdata, setDeckFormdata] = useState(initialRender);
 
   const handleChange = ({ target }) => {
-    console.log(target);
-    setFormData({
-      ...formData,
+    setDeckFormdata({
+      ...deckFormdata,
       [target.name]: target.value,
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createDeck(formData);
-    setFormData(initialRender);
+    createDeck(deckFormdata);
+    setDeckFormdata(initialRender);
   };
 
   return (
-    <form name="create" onSubmit={handleSubmit}>
+    <form name="createDeck" onSubmit={handleSubmit}>
       <h1>Create Deck</h1>
       <br />
       <h3>Name</h3>
@@ -36,7 +35,7 @@ function DeckForm() {
         name="name"
         placeholder="Deck Name"
         onChange={handleChange}
-        value={formData.name}
+        value={deckFormdata.name}
       ></textarea>
       <br />
       <textarea
@@ -44,7 +43,7 @@ function DeckForm() {
         name="description"
         placeholder="Brief description of the deck"
         onChange={handleChange}
-        value={formData.description}
+        value={deckFormdata.description}
       ></textarea>
       <br />
       <Link to={"/"}>
@@ -55,4 +54,4 @@ function DeckForm() {
   );
 }
 
-export default DeckForm;
+export default CreateDeckForm;
