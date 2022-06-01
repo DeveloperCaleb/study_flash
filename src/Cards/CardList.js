@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Route, Switch, Link, useHistory } from "react-router-dom";
+import React from "react";
 import { Card } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
 import { deleteCard } from "../utils/api";
 
 function CardList({ cards, deckId }) {
   const history = useHistory();
 
+  //Will delete the selected card on click and then refresh the page.
   const handleClick = ({ target }) => {
     deleteCard(target.id);
     history.go(0);
   };
+
   //Creates card element for every card.
   const cardList = cards.map((card) => {
     return (

@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { listDecks, deleteDeck } from "../utils/api/index";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-function DeckList({ decks, setDecks }) {
+function DeckList() {
   const history = useHistory();
+
+  const [decks, setDecks] = useState([]);
+
+  //Load all decks on initial render.
   useEffect(() => {
     async function getDecks() {
-      const response = listDecks();
-      const deckList = await response;
+      const response = await listDecks();
 
-      setDecks(deckList);
+      setDecks(response);
     }
     getDecks();
   }, []);
 
+  //When clicked delete the selected deck and refresh the page.
   const handleClick = ({ target }) => {
     deleteDeck(target.id);
     history.go(0);
   };
 
+  //Creates a card for each Deck. "Need to move this to it's own component"
   const deckCard = decks.map((deck) => {
     return (
       <Card key={decks.indexOf(deck)}>

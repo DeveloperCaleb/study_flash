@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useParams, Link } from "react-router-dom";
-import { readDeck } from "../utils/api/index";
+import { Link, useParams } from "react-router-dom";
 import CardList from "../Cards/CardList";
+import { readDeck } from "../utils/api/index";
 
-function Deck({ deck, setDeck, cards, setCards }) {
-  //Set initial hook to an empty array
+function Deck() {
+  const { deckId } = useParams();
 
-  const deckId = useParams().deckId;
+  const [deck, setDeck] = useState({});
 
-  //When the page first renders get the data of the deck with id ${deckId} from the DB and setDeck to it
+  //When the page first renders get the data of the deck with deckId from the DB and setDeck to it. Also set the cards to be the currentDecks cards array.
   useEffect(() => {
     async function loadDeck() {
-      const response = readDeck(deckId);
-      const currentDeck = await response;
-
-      setDeck(currentDeck);
-      setCards(currentDeck.cards);
+      const response = await readDeck(deckId);
+      console.log("response", response);
+      setDeck(response);
     }
     loadDeck();
-  }, []);
+  }, [deckId]);
+
+  console.log(deck);
 
   //Deck information
   const deckItem = (
@@ -41,9 +41,8 @@ function Deck({ deck, setDeck, cards, setCards }) {
     </div>
   );
 
-  //set cardItems to the CardList component with the current deck being the prop
-  //I think this is where I am having the problem. If I add {cardItems} to the return after the deck is initially set it is no problem but if I reload the page breaks.
-  const cardItems = <CardList cards={cards} deckId={deckId} />;
+  //set cardItems using the CardList component.
+  //const cardItems = <CardList cards={deck.cards} deckId={deckId} />;
 
   return (
     <>
@@ -51,7 +50,7 @@ function Deck({ deck, setDeck, cards, setCards }) {
         {deckItem}
         <br></br>
         <h1>Cards</h1>
-        {cardItems}
+        <CardList cards={deck.cards || []} deckId={deckId} />
       </div>
     </>
   );

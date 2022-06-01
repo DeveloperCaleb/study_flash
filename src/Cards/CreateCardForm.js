@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Route, Switch, useParams } from "react-router-dom";
-import { createCard } from "../utils/api";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { createCard, readDeck } from "../utils/api";
 
-function CreateCardForm({ deck }) {
+function CreateCardForm() {
   const { deckId } = useParams();
+
+  const [deck, setDeck] = useState({});
 
   const initialRender = {
     id: "",
@@ -13,8 +14,18 @@ function CreateCardForm({ deck }) {
     deckId: "",
   };
 
+  useEffect(() => {
+    async function loadDeck() {
+      const response = await readDeck(deckId);
+
+      setDeck(response);
+    }
+    loadDeck();
+  }, [deckId]);
+
   const [cardFormData, setCardFormData] = useState(initialRender);
 
+  //When a change is made to the text area card formdata is set to match the target.
   const handleChange = ({ target }) => {
     setCardFormData({
       ...cardFormData,
@@ -22,6 +33,7 @@ function CreateCardForm({ deck }) {
     });
   };
 
+  //When form is submitted a new card is created and cardFormData is reset to be blank.
   const handleSubmit = (event) => {
     event.preventDefault();
     createCard(deckId, cardFormData);

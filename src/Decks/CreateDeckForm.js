@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Route, Switch } from "react-router-dom";
 import { createDeck } from "../utils/api";
 
 function CreateDeckForm() {
@@ -12,6 +11,7 @@ function CreateDeckForm() {
 
   const [deckFormdata, setDeckFormdata] = useState(initialRender);
 
+  //When textareas change uodate the deckFormData with the changes.
   const handleChange = ({ target }) => {
     setDeckFormdata({
       ...deckFormdata,
@@ -19,6 +19,7 @@ function CreateDeckForm() {
     });
   };
 
+  //When the form is submitted a new deck is created and the form is reset to be blank.
   const handleSubmit = (event) => {
     event.preventDefault();
     createDeck(deckFormdata);

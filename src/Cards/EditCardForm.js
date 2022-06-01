@@ -1,34 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams, useHistory } from "react-router-dom";
-import { readCard, readDeck, updateCard } from "../utils/api";
+import { readCard, updateCard } from "../utils/api";
 
-function EditCardForm({ card, setCard }) {
+function EditCardForm() {
   const { cardId, deckId } = useParams();
   const history = useHistory();
 
+  const [card, setCard] = useState({});
+
+  //The selected card data is loaded.
   useEffect(() => {
     async function loadCard() {
-      const response = readCard(cardId);
-      const currentCard = await response;
+      const response = await readCard(cardId);
 
-      setCard(currentCard);
+      setCard(response);
     }
+
     loadCard();
-  }, []);
+  }, [cardId]);
 
-  const [editCardDataForm, setEditCardDataForm] = useState(card);
+  //editCardDataForm is set to be the information of the card. This allows for the text area to have the current data for editing.
 
+  //When a textarea is changed the value editCardDataForm is updated.
   const handleChange = ({ target }) => {
-    setEditCardDataForm({
-      ...editCardDataForm,
+    setCard({
+      ...card,
       [target.name]: target.value,
     });
   };
 
+  //On submit update the card and return to the deck page.
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateCard(editCardDataForm);
+    updateCard(card);
     history.go(-1);
   };
 
@@ -42,7 +47,7 @@ function EditCardForm({ card, setCard }) {
         name="front"
         id="front"
         onChange={handleChange}
-        value={editCardDataForm.front}
+        value={card.front}
       ></textarea>
       <br />
       <h3>Back</h3>
@@ -51,7 +56,7 @@ function EditCardForm({ card, setCard }) {
         name="back"
         id="back"
         onChange={handleChange}
-        value={editCardDataForm.back}
+        value={card.back}
       ></textarea>
       <br />
       <Link to={`/decks/${deckId}`}>

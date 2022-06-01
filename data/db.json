@@ -13,7 +13,12 @@
     {
       "id": 3,
       "name": "Test Deck",
-      "description": "A deck for testing duh. I mean I can't blame you for not knowing. But I mean it is pretty obvious."
+      "description": "Test Deck\n"
+    },
+    {
+      "id": 4,
+      "name": "Test Deck 2 electric boogaloo",
+      "description": "It is another test deck"
     }
   ],
   "cards": [
@@ -56,20 +61,20 @@
     },
     {
       "id": 8,
-      "front": "Front test 1",
-      "back": "Back test 1",
+      "front": "Test 4 front",
+      "back": "Test 4 back",
       "deckId": 3
     },
     {
       "id": 9,
-      "front": "Front test 2",
-      "back": "Back test 2 ",
+      "front": "Test 3 front",
+      "back": "Test front 3",
       "deckId": 3
     },
     {
       "id": 10,
-      "front": "Test 3",
-      "back": "Test 3",
+      "front": "Test 2 front",
+      "back": "Test 2 back",
       "deckId": 3
     }
   ]

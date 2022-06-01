@@ -4,32 +4,34 @@ import { useParams, useHistory } from "react-router-dom";
 import { readDeck } from "../utils/api";
 import { updateDeck } from "../utils/api";
 
-function EditDeckForm({ deck, setDeck }) {
+function EditDeckForm() {
   const { deckId } = useParams();
   const history = useHistory();
 
+  const [deck, setDeck] = useState({});
+
+  //Get deck data on initial render
   useEffect(() => {
     async function loadDeck() {
-      const response = readDeck(deckId);
-      const currentDeck = await response;
+      const response = await readDeck(deckId);
 
-      setDeck(currentDeck);
+      setDeck(response);
     }
     loadDeck();
-  }, []);
+  }, [deckId]);
 
-  const [editDeckFormData, setEditDeckFormData] = useState(deck);
-
+  //On change update the deck data.
   const handleChange = ({ target }) => {
-    setEditDeckFormData({
-      ...editDeckFormData,
+    setDeck({
+      ...deck,
       [target.name]: target.value,
     });
   };
 
+  //On submit update the deck and return to the deck screen.
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateDeck(editDeckFormData);
+    updateDeck(deck);
     history.go(-1);
   };
 
@@ -43,14 +45,14 @@ function EditDeckForm({ deck, setDeck }) {
         id="name"
         name="name"
         onChange={handleChange}
-        value={editDeckFormData.name}
+        value={deck.name}
       ></textarea>
       <br />
       <textarea
         id="description"
         name="description"
         onChange={handleChange}
-        value={editDeckFormData.description}
+        value={deck.description}
       ></textarea>
       <br />
       <Link to={`/decks/${deckId}`}>

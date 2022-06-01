@@ -1,31 +1,28 @@
-import React from "react";
-import { Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Route, Switch, useParams } from "react-router-dom";
-import StudyCard from "./StudyCard";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { readDeck } from "../utils/api";
+import StudyCard from "./StudyCard";
 
-function StudyDeck({ deck, cards, setCards, setDeck, card, setCard }) {
+function StudyDeck() {
   const { deckId } = useParams();
+
+  const [deck, setDeck] = useState({});
 
   useEffect(() => {
     async function loadDeck() {
-      const response = readDeck(deckId);
-      const currentDeck = await response;
+      const response = await readDeck(deckId);
 
-      setDeck(currentDeck);
-      setCards(currentDeck.cards);
+      setDeck(response);
     }
     loadDeck();
-  }, []);
+  }, [deckId]);
 
-  if (cards.length < 3) {
+  if (deck.cards.length < 3) {
     return (
       <div>
         <p>
-          You need at least 3 cards to study. There are {`${cards.length}`} in
-          this deck
+          You need at least 3 cards to study. There are {`${deck.cards.length}`}
+          in this deck
         </p>
         <br />
         <Link to={`/decks/${deckId}/cards/new`}>
@@ -36,7 +33,7 @@ function StudyDeck({ deck, cards, setCards, setDeck, card, setCard }) {
   } else {
     return (
       <div>
-        <StudyCard cards={cards} card={card} setCard={setCard} deck={deck} />
+        <StudyCard cards={deck.cards} />
       </div>
     );
   }
