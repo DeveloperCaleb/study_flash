@@ -32,7 +32,7 @@ function CreateDeckForm() {
     });
   };
 
-  //When the form is submitted a new deck is created and the form is reset to be blank.
+  //When the form is submitted a new deck is created and user is taken to the new Deck's information page.
   const handleSubmit = (event) => {
     event.preventDefault();
     createDeck(deckFormdata);

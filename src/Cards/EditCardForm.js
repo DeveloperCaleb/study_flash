@@ -29,7 +29,6 @@ function EditCardForm() {
   }, [cardId]);
 
   //editCardDataForm is set to be the information of the card. This allows for the text area to have the current data for editing.
-
   //When a textarea is changed the value editCardDataForm is updated.
   const handleChange = ({ target }) => {
     setCard({

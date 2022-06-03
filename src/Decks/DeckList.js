@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { Link, useHistory } from "react-router-dom";
-import DeckCard from "../Cards/DeckCard";
+import DeckListing from "./DeckListing";
 import { listDecks } from "../utils/api/index";
 import "./DeckList.css";
 
@@ -28,7 +28,7 @@ function DeckList() {
           {` Create Deck`}
         </button>
       </Link>
-      <DeckCard decks={decks} />
+      <DeckListing decks={decks} />
     </div>
   );
 }

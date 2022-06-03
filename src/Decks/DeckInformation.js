@@ -8,6 +8,7 @@ import "./DeckInformation.css";
 function DeckInformation({ deck }) {
   const history = useHistory();
 
+  //Will ask for confirmation and then delete the selected card on click and then refresh the page.
   const handleClick = ({ target }) => {
     if (
       window.confirm("Delete this deck?\n\nYou will not be able to recover it")

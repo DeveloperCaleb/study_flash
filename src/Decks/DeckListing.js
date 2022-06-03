@@ -4,9 +4,11 @@ import { FaBookReader, FaTrash } from "react-icons/fa";
 import { Link, useHistory } from "react-router-dom";
 import { deleteDeck } from "../utils/api/index";
 
-function DeckCard({ decks }) {
+function DeckListing({ decks }) {
   {
     const history = useHistory();
+
+    //Ask for confirmation and then will delete the selected deck and refresh
     const handleClick = ({ target }) => {
       if (
         window.confirm(
@@ -18,6 +20,7 @@ function DeckCard({ decks }) {
       }
     };
 
+    //Creates a Card element for each Deck.
     return decks.map((deck) => {
       return (
         <Card key={decks.indexOf(deck)}>
@@ -48,4 +51,4 @@ function DeckCard({ decks }) {
   }
 }
 
-export default DeckCard;
+export default DeckListing;
