@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Breadcrumb } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import { readDeck } from "../utils/api";
+import NeedCards from "./NeedCards";
 import StudyCard from "./StudyCard";
 
 function StudyDeck() {
@@ -17,23 +19,30 @@ function StudyDeck() {
     loadDeck();
   }, [deckId]);
 
-  if (deck.cards.length < 3) {
+  if (deck?.cards?.length < 3) {
     return (
       <div>
-        <p>
-          You need at least 3 cards to study. There are {`${deck.cards.length}`}
-          in this deck
-        </p>
-        <br />
-        <Link to={`/decks/${deckId}/cards/new`}>
-          <button>Add Cards</button>
-        </Link>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href={`/decks/${deckId}`}>
+            {deck?.name}
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active="false">Study</Breadcrumb.Item>
+        </Breadcrumb>
+        <NeedCards cards={deck.cards} />
       </div>
     );
   } else {
     return (
       <div>
-        <StudyCard cards={deck.cards} />
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href={`/decks/${deckId}`}>
+            {deck?.name}
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active="false">Study</Breadcrumb.Item>
+        </Breadcrumb>
+        <StudyCard deck={deck} cards={deck.cards || []} />
       </div>
     );
   }

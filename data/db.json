@@ -12,13 +12,8 @@
     },
     {
       "id": 3,
-      "name": "Test Deck",
-      "description": "Test Deck\n"
-    },
-    {
-      "id": 4,
-      "name": "Test Deck 2 electric boogaloo",
-      "description": "It is another test deck"
+      "name": "Test Deck 2",
+      "description": "Another test deck"
     }
   ],
   "cards": [
@@ -61,20 +56,8 @@
     },
     {
       "id": 8,
-      "front": "Test 4 front",
-      "back": "Test 4 back",
-      "deckId": 3
-    },
-    {
-      "id": 9,
-      "front": "Test 3 front",
-      "back": "Test front 3",
-      "deckId": 3
-    },
-    {
-      "id": 10,
-      "front": "Test 2 front",
-      "back": "Test 2 back",
+      "front": "Test card 1",
+      "back": "Test card 1",
       "deckId": 3
     }
   ]

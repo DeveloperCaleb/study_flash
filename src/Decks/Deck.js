@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Card, Breadcrumb } from "react-bootstrap";
+import { Link, useParams, useHistory } from "react-router-dom";
 import CardList from "../Cards/CardList";
-import { readDeck } from "../utils/api/index";
+import { readDeck, deleteDeck, deleteCard } from "../utils/api/index";
+import DeckInformation from "./DeckInformation";
+import "./Deck.css";
 
 function Deck() {
   const { deckId } = useParams();
+  const history = useHistory();
 
   const [deck, setDeck] = useState({});
 
@@ -13,41 +16,20 @@ function Deck() {
   useEffect(() => {
     async function loadDeck() {
       const response = await readDeck(deckId);
-      console.log("response", response);
+
       setDeck(response);
     }
     loadDeck();
   }, [deckId]);
 
-  console.log(deck);
-
-  //Deck information
-  const deckItem = (
-    <div>
-      <Card.Body>
-        <Card.Title>{deck.name}</Card.Title>
-        <Card.Text>{deck.description}</Card.Text>
-        <Link to={`/decks/${deckId}/edit`}>
-          <button>Edit</button>
-        </Link>
-        <Link to={`/decks/${deckId}/study`}>
-          <button>Study</button>
-        </Link>
-        <Link to={`/decks/${deckId}/cards/new`}>
-          <button>+ Add Cards</button>
-        </Link>
-        <button>Delete</button>
-      </Card.Body>
-    </div>
-  );
-
-  //set cardItems using the CardList component.
-  //const cardItems = <CardList cards={deck.cards} deckId={deckId} />;
-
   return (
     <>
       <div>
-        {deckItem}
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item active="false">{deck?.name}</Breadcrumb.Item>
+        </Breadcrumb>
+        {<DeckInformation deck={deck} />}
         <br></br>
         <h1>Cards</h1>
         <CardList cards={deck.cards || []} deckId={deckId} />

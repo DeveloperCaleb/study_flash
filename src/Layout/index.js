@@ -5,6 +5,7 @@ import DeckList from "../Decks/DeckList";
 import DeckRoutes from "../Layout/DeckRoutes";
 import Header from "./Header";
 import NotFound from "./NotFound";
+import "./Global.css";
 
 function Layout() {
   return (

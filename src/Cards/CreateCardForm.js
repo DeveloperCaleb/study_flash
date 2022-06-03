@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Breadcrumb } from "react-bootstrap";
 import { createCard, readDeck } from "../utils/api";
+import "./CreateCardForm.css";
 
 function CreateCardForm() {
   const { deckId } = useParams();
@@ -42,12 +44,19 @@ function CreateCardForm() {
 
   return (
     <>
+      <Breadcrumb>
+        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+        <Breadcrumb.Item href={`/decks/${deckId}`}>{deck.name}</Breadcrumb.Item>
+        <Breadcrumb.Item active="false">Add Card</Breadcrumb.Item>
+      </Breadcrumb>
       <form name="createCard" onSubmit={handleSubmit}>
         <h1>{`${deck.name}`}: Add Card</h1>
         <br />
         <h3>Front</h3>
         <br />
         <textarea
+          cols={120}
+          rows={3}
           id="front"
           name="front"
           placeholder="Front side of card"
@@ -55,7 +64,12 @@ function CreateCardForm() {
           value={cardFormData.front}
         ></textarea>
         <br />
+        <br />
+        <h3>Back</h3>
+        <br />
         <textarea
+          cols={120}
+          rows={3}
           id="back"
           name="back"
           placeholder="Back side of card"
@@ -64,9 +78,11 @@ function CreateCardForm() {
         ></textarea>
         <br />
         <Link to={`/decks/${deckId}`}>
-          <button>Done</button>
+          <button className="done">Done</button>
         </Link>
-        <button type="submit">Save</button>
+        <button className="save" type="submit">
+          Save
+        </button>
       </form>
     </>
   );

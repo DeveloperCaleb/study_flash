@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { createDeck } from "../utils/api";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { createDeck, listDecks } from "../utils/api";
+import { Breadcrumb } from "react-bootstrap";
+import "./CreateDeckForm.css";
 
 function CreateDeckForm() {
+  const history = useHistory();
   const initialRender = {
     id: "",
     name: "",
@@ -10,6 +13,16 @@ function CreateDeckForm() {
   };
 
   const [deckFormdata, setDeckFormdata] = useState(initialRender);
+  const [decks, setDecks] = useState([]);
+
+  useEffect(() => {
+    async function loadDecks() {
+      const response = await listDecks();
+
+      setDecks(response);
+    }
+    loadDecks();
+  }, []);
 
   //When textareas change uodate the deckFormData with the changes.
   const handleChange = ({ target }) => {
@@ -23,35 +36,45 @@ function CreateDeckForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     createDeck(deckFormdata);
-    setDeckFormdata(initialRender);
+    history.push(`/decks/${decks.length + 1}`);
   };
 
   return (
-    <form name="createDeck" onSubmit={handleSubmit}>
-      <h1>Create Deck</h1>
-      <br />
-      <h3>Name</h3>
-      <textarea
-        id="name"
-        name="name"
-        placeholder="Deck Name"
-        onChange={handleChange}
-        value={deckFormdata.name}
-      ></textarea>
-      <br />
-      <textarea
-        id="description"
-        name="description"
-        placeholder="Brief description of the deck"
-        onChange={handleChange}
-        value={deckFormdata.description}
-      ></textarea>
-      <br />
-      <Link to={"/"}>
-        <button>Cancel</button>
-      </Link>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <Breadcrumb>
+        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+        <Breadcrumb.Item active="false">Create Deck</Breadcrumb.Item>
+      </Breadcrumb>
+      <form name="createDeck" onSubmit={handleSubmit}>
+        <h1>Create Deck</h1>
+        <br />
+        <h3>Name</h3>
+        <input
+          id="name"
+          name="name"
+          placeholder="Deck Name"
+          onChange={handleChange}
+          value={deckFormdata.name}
+        ></input>
+        <br />
+        <textarea
+          cols={120}
+          rows={3}
+          id="description"
+          name="description"
+          placeholder="Brief description of the deck"
+          onChange={handleChange}
+          value={deckFormdata.description}
+        ></textarea>
+        <br />
+        <Link to={"/"}>
+          <button>Cancel</button>
+        </Link>
+        <button className="createDeckSubmit" type="submit">
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
 

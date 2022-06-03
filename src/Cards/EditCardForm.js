@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useParams, useHistory } from "react-router-dom";
-import { readCard, updateCard } from "../utils/api";
+import { Breadcrumb } from "react-bootstrap";
+import { useParams, useHistory, Link } from "react-router-dom";
+import { readCard, readDeck, updateCard } from "../utils/api";
+import "./EditCardForm.css";
 
 function EditCardForm() {
   const { cardId, deckId } = useParams();
   const history = useHistory();
 
   const [card, setCard] = useState({});
+  const [deck, setDeck] = useState({});
 
   //The selected card data is loaded.
   useEffect(() => {
@@ -17,7 +19,13 @@ function EditCardForm() {
       setCard(response);
     }
 
+    async function loadDeck() {
+      const response = await readDeck(deckId);
+      setDeck(response);
+    }
+
     loadCard();
+    loadDeck();
   }, [cardId]);
 
   //editCardDataForm is set to be the information of the card. This allows for the text area to have the current data for editing.
@@ -38,32 +46,43 @@ function EditCardForm() {
   };
 
   return (
-    <form name="editCard" onSubmit={handleSubmit}>
-      <h1>Edit Card</h1>
-      <br />
-      <h3>Front</h3>
-      <br />
-      <textarea
-        name="front"
-        id="front"
-        onChange={handleChange}
-        value={card.front}
-      ></textarea>
-      <br />
-      <h3>Back</h3>
-      <br />
-      <textarea
-        name="back"
-        id="back"
-        onChange={handleChange}
-        value={card.back}
-      ></textarea>
-      <br />
-      <Link to={`/decks/${deckId}`}>
-        <button>Cancel</button>
-      </Link>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <Breadcrumb>
+        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+        <Breadcrumb.Item href={`/decks/${deckId}`}>{deck.name}</Breadcrumb.Item>
+        <Breadcrumb.Item active="false">Add Card</Breadcrumb.Item>
+      </Breadcrumb>
+      <form name="editCard" onSubmit={handleSubmit}>
+        <h1>Edit Card</h1>
+        <br />
+        <h3>Front</h3>
+        <textarea
+          cols={120}
+          rows={3}
+          name="front"
+          id="front"
+          onChange={handleChange}
+          value={card.front}
+        ></textarea>
+        <br />
+        <h3>Back</h3>
+        <textarea
+          cols={120}
+          rows={3}
+          name="back"
+          id="back"
+          onChange={handleChange}
+          value={card.back}
+        ></textarea>
+        <br />
+        <Link to={`/decks/${deckId}`}>
+          <button>Cancel</button>
+        </Link>
+        <button className="editCardSubmit" type="submit">
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
 
