@@ -1,6 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import "./NeedCards.css";
+import { useParams } from "react-router-dom";
 
 function NeedCards({ cards }) {
   const { deckId } = useParams();
@@ -14,9 +13,9 @@ function NeedCards({ cards }) {
         in this deck.
       </p>
       <br />
-      <Link to={`/decks/${deckId}/cards/new`}>
+      <a href={`/decks/${deckId}/cards/new`}>
         <button className="needCard">Add Cards</button>
-      </Link>
+      </a>
     </div>
   );
 }

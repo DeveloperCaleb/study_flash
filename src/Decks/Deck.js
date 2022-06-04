@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Card, Breadcrumb } from "react-bootstrap";
-import { Link, useParams, useHistory } from "react-router-dom";
+import Breadcrumb from "../Layout/BreadCrumb";
+import { useHistory, useParams } from "react-router-dom";
 import CardList from "../Cards/CardList";
-import { readDeck, deleteDeck, deleteCard } from "../utils/api/index";
+import { readDeck } from "../utils/api/index";
+
 import DeckInformation from "./DeckInformation";
-import "./Deck.css";
 
 function Deck() {
   const { deckId } = useParams();
   const history = useHistory();
-
+  const [crumbs, setCrumbs] = useState([]);
   const [deck, setDeck] = useState({});
 
   //When the page first renders get the data of the deck with deckId from the DB and setDeck to it. Also set the cards to be the currentDecks cards array.
@@ -22,19 +22,25 @@ function Deck() {
     loadDeck();
   }, [deckId]);
 
+  useEffect(() => {
+    function loadCrumbs() {
+      setCrumbs(["Home", `${deck.name}`]);
+    }
+    loadCrumbs();
+  }, [deck]);
+
+  const selectedCrumb = (crumb) => {
+    history.push("/");
+  };
+
   return (
-    <>
-      <div>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item active="false">{deck?.name}</Breadcrumb.Item>
-        </Breadcrumb>
-        {<DeckInformation deck={deck} />}
-        <br></br>
-        <h1>Cards</h1>
-        <CardList cards={deck.cards || []} deckId={deckId} />
-      </div>
-    </>
+    <div>
+      <Breadcrumb crumbs={crumbs} selected={selectedCrumb} />
+      {<DeckInformation deck={deck} />}
+      <br></br>
+      <h1>Cards</h1>
+      <CardList cards={deck.cards || []} deckId={deckId} />
+    </div>
   );
 }
 

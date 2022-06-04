@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
-import DeckListing from "./DeckListing";
+import { useHistory } from "react-router-dom";
 import { listDecks } from "../utils/api/index";
-import "./DeckList.css";
+
+import DeckListing from "./DeckListing";
 
 function DeckList() {
   const history = useHistory();
@@ -22,12 +21,9 @@ function DeckList() {
 
   return (
     <div>
-      <Link to={`/decks/new`}>
-        <button className="createDeck">
-          <FaPlus />
-          {` Create Deck`}
-        </button>
-      </Link>
+      <a href={`/decks/new`}>
+        <button className="createDeck">Create Deck</button>
+      </a>
       <DeckListing decks={decks} />
     </div>
   );

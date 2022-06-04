@@ -1,6 +1,6 @@
 .deleteButton {
   background-color: rgb(247, 46, 46);
-  width: 50px;
+  width: auto;
   border-radius: 5px;
   margin-left: 60%;
 }

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Card } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import "./StudyCard.css";
 
 function StudyCard({ deck, cards }) {
   const history = useHistory();
@@ -36,21 +34,23 @@ function StudyCard({ deck, cards }) {
   );
 
   return (
-    <div>
+    <div className="card">
       <h1>Study: {deck.name}</h1>
-      <Card.Body>
-        <Card.Title>
+      <div className="card-body">
+        <h1 className="card-title">
           Card {counter + 1 === counter.length ? counter : counter + 1} of
           {` ${cards.length}`}
-        </Card.Title>
-        <Card.Text>
-          {flip ? cards[counter]?.front : cards[counter]?.back}
-        </Card.Text>
+        </h1>
+        <p className="card-text">
+          {flip
+            ? cards[counter] && cards[counter].front
+            : cards[counter] && cards[counter].back}
+        </p>
         <button type="button" onClick={handleClick}>
           Flip
         </button>
         {!flip ? nextButton : false}
-      </Card.Body>
+      </div>
     </div>
   );
 }

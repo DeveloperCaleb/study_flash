@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Breadcrumb } from "react-bootstrap";
+import Breadcrumb from "../Layout/BreadCrumb";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { readDeck } from "../utils/api";
 import { updateDeck } from "../utils/api";
-import "./EditDeckForm.css";
 
 function EditDeckForm() {
   const { deckId } = useParams();
   const history = useHistory();
 
+  const [crumbs, setCrumbs] = useState([]);
   const [deck, setDeck] = useState({});
 
   //Get deck data on initial render
@@ -20,6 +20,13 @@ function EditDeckForm() {
     }
     loadDeck();
   }, [deckId]);
+
+  useEffect(() => {
+    function loadCrumbs() {
+      setCrumbs(["Home", `${deck.name}`, "Edit Deck"]);
+    }
+    loadCrumbs();
+  }, [deck]);
 
   //On change update the deck data.
   const handleChange = ({ target }) => {
@@ -35,16 +42,17 @@ function EditDeckForm() {
     updateDeck(deck);
     history.go(-1);
   };
+  const selectedCrumb = (crumb) => {
+    if (crumb == "Home") {
+      history.push("/");
+    } else {
+      history.push(`/decks/${deckId}`);
+    }
+  };
 
   return (
     <div>
-      <Breadcrumb>
-        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href={`/decks/${deckId}`}>
-          {deck?.name}
-        </Breadcrumb.Item>
-        <Breadcrumb.Item active="false">Edit Deck</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb crumbs={crumbs} selected={selectedCrumb} />
       <form name="editDeck" onSubmit={handleSubmit}>
         <h1>Edit Deck</h1>
         <br />
@@ -68,9 +76,9 @@ function EditDeckForm() {
           value={deck.description}
         ></textarea>
         <br />
-        <Link to={`/decks/${deckId}`}>
+        <a href={`/decks/${deckId}`}>
           <button>Cancel</button>
-        </Link>
+        </a>
         <button className="editDeckSubmit" type="submit">
           Submit
         </button>

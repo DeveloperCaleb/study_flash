@@ -1,7 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
-import { FaBookReader, FaTrash } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { deleteDeck } from "../utils/api/index";
 
 function DeckListing({ decks }) {
@@ -23,29 +21,27 @@ function DeckListing({ decks }) {
     //Creates a Card element for each Deck.
     return decks.map((deck) => {
       return (
-        <Card key={decks.indexOf(deck)}>
-          <Card.Body>
-            <Card.Title>{deck.name}</Card.Title>
-            <Card.Subtitle>{deck.cards.length} cards</Card.Subtitle>
-            <Card.Text>{deck.description}</Card.Text>
-            <Link to={`/decks/${deck.id}`}>
+        <div className="card" key={decks.indexOf(deck)}>
+          <div className="card-body">
+            <h1 className="card-title">{deck.name}</h1>
+            <h3 className="card-title">{deck.cards.length} cards</h3>
+            <p className="card-text">{deck.description}</p>
+            <a href={`/decks/${deck.id}`}>
               <button className="view">View</button>
-            </Link>
-            <Link to={`/decks/${deck.id}/study`}>
-              <button className="study">
-                <FaBookReader /> {` Study`}
-              </button>
-            </Link>
+            </a>
+            <a href={`/decks/${deck.id}/study`}>
+              <button className="study">Study</button>
+            </a>
             <button
               type="button"
               className="deleteDeck"
               id={`${deck.id}`}
               onClick={handleClick}
             >
-              <FaTrash />
+              Delete
             </button>
-          </Card.Body>
-        </Card>
+          </div>
+        </div>
       );
     });
   }

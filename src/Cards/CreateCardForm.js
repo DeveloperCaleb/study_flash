@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Breadcrumb } from "react-bootstrap";
+import { useHistory, useParams } from "react-router-dom";
+import Breadcrumb from "../Layout/BreadCrumb";
 import { createCard, readDeck } from "../utils/api";
-import "./CreateCardForm.css";
 
 function CreateCardForm() {
+  const history = useHistory();
+
   const { deckId } = useParams();
 
+  const [crumbs, setCrumbs] = useState([]);
   const [deck, setDeck] = useState({});
 
   const initialRender = {
@@ -19,11 +21,18 @@ function CreateCardForm() {
   useEffect(() => {
     async function loadDeck() {
       const response = await readDeck(deckId);
-
+      console.log(response);
       setDeck(response);
     }
     loadDeck();
   }, [deckId]);
+
+  useEffect(() => {
+    function loadCrumbs() {
+      setCrumbs(["Home", `${deck.name}`, "Add Card"]);
+    }
+    loadCrumbs();
+  }, [deck]);
 
   const [cardFormData, setCardFormData] = useState(initialRender);
 
@@ -35,6 +44,14 @@ function CreateCardForm() {
     });
   };
 
+  const selectedCrumb = (crumb) => {
+    if (crumb == "Home") {
+      history.push("/");
+    } else {
+      history.push(`/decks/${deckId}`);
+    }
+  };
+
   //When form is submitted a new card is created and cardFormData is reset to be blank.
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -43,12 +60,8 @@ function CreateCardForm() {
   };
 
   return (
-    <>
-      <Breadcrumb>
-        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href={`/decks/${deckId}`}>{deck.name}</Breadcrumb.Item>
-        <Breadcrumb.Item active="false">Add Card</Breadcrumb.Item>
-      </Breadcrumb>
+    <div>
+      <Breadcrumb crumbs={crumbs} selected={selectedCrumb} />
       <form name="createCard" onSubmit={handleSubmit}>
         <h1>{`${deck.name}`}: Add Card</h1>
         <br />
@@ -77,14 +90,14 @@ function CreateCardForm() {
           value={cardFormData.back}
         ></textarea>
         <br />
-        <Link to={`/decks/${deckId}`}>
+        <a href={`/decks/${deckId}`}>
           <button className="done">Done</button>
-        </Link>
+        </a>
         <button className="save" type="submit">
           Save
         </button>
       </form>
-    </>
+    </div>
   );
 }
 

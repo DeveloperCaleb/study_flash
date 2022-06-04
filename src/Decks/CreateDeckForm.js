@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Breadcrumb from "../Layout/BreadCrumb";
 import { createDeck, listDecks } from "../utils/api";
-import { Breadcrumb } from "react-bootstrap";
-import "./CreateDeckForm.css";
 
 function CreateDeckForm() {
   const history = useHistory();
@@ -12,6 +11,7 @@ function CreateDeckForm() {
     description: "",
   };
 
+  const [crumbs, setCrumbs] = useState([]);
   const [deckFormdata, setDeckFormdata] = useState(initialRender);
   const [decks, setDecks] = useState([]);
 
@@ -22,6 +22,13 @@ function CreateDeckForm() {
       setDecks(response);
     }
     loadDecks();
+  }, []);
+
+  useEffect(() => {
+    function loadCrumbs() {
+      setCrumbs(["Home", "Create Deck"]);
+    }
+    loadCrumbs();
   }, []);
 
   //When textareas change uodate the deckFormData with the changes.
@@ -39,12 +46,13 @@ function CreateDeckForm() {
     history.push(`/decks/${decks.length + 1}`);
   };
 
+  const selectedCrumb = (crumb) => {
+    history.push("/");
+  };
+
   return (
     <div>
-      <Breadcrumb>
-        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-        <Breadcrumb.Item active="false">Create Deck</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb crumbs={crumbs} selected={selectedCrumb} />`
       <form name="createDeck" onSubmit={handleSubmit}>
         <h1>Create Deck</h1>
         <br />
@@ -67,9 +75,9 @@ function CreateDeckForm() {
           value={deckFormdata.description}
         ></textarea>
         <br />
-        <Link to={"/"}>
+        <a href={"/"}>
           <button>Cancel</button>
-        </Link>
+        </a>
         <button className="createDeckSubmit" type="submit">
           Submit
         </button>

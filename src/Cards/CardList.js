@@ -1,9 +1,6 @@
 import React from "react";
-import { Card } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { deleteCard } from "../utils/api";
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
-import "./CardList.css";
 
 function CardList({ cards, deckId }) {
   const history = useHistory();
@@ -19,27 +16,25 @@ function CardList({ cards, deckId }) {
   };
 
   //Creates card element for every card.
-  const cardList = cards.map((card) => {
+  const cardList = cards.map((card, index) => {
     return (
-      <Card>
-        <Card.Body key={cards.indexOf(card)}>
-          <Card.Text>{card.front}</Card.Text>
-          <Card.Text>{card.back}</Card.Text>
-          <Link to={`/decks/${deckId}/cards/${card.id}/edit`}>
-            <button className="editCard">
-              <FaPencilAlt /> {` Edit`}
-            </button>
-          </Link>
+      <div key={index} className="card">
+        <div className="card-body" key={cards.indexOf(card)}>
+          <p className="card.text">{card.front}</p>
+          <p className="card.text">{card.back}</p>
+          <a href={`/decks/${deckId}/cards/${card.id}/edit`}>
+            <button className="editCard">Edit</button>
+          </a>
           <button
             className="deleteCardButton"
             type="button"
             id={`${card.id}`}
             onClick={handleClick}
           >
-            <FaTrash />
+            Delete
           </button>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
     );
   });
 

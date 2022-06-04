@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import Breadcrumb from "../Layout/BreadCrumb";
+import { useParams, useHistory } from "react-router-dom";
 import { readDeck } from "../utils/api";
 import NeedCards from "./NeedCards";
 import StudyCard from "./StudyCard";
 
 function StudyDeck() {
+  const history = useHistory();
   const { deckId } = useParams();
 
+  const [crumbs, setCrumbs] = useState([]);
   const [deck, setDeck] = useState({});
 
   useEffect(() => {
@@ -19,29 +21,32 @@ function StudyDeck() {
     loadDeck();
   }, [deckId]);
 
-  if (deck?.cards?.length < 3) {
+  useEffect(() => {
+    function loadCrumbs() {
+      setCrumbs(["Home", `${deck.name}`, "Study"]);
+    }
+    loadCrumbs();
+  }, [deck]);
+
+  const selectedCrumb = (crumb) => {
+    if (crumb == "Home") {
+      history.push("/");
+    } else {
+      history.push(`/decks/${deckId}`);
+    }
+  };
+
+  if (deck && deck.cards && deck.cards.length < 3) {
     return (
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href={`/decks/${deckId}`}>
-            {deck?.name}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active="false">Study</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb crumbs={crumbs} selected={selectedCrumb} />
         <NeedCards cards={deck.cards} />
       </div>
     );
   } else {
     return (
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href={`/decks/${deckId}`}>
-            {deck?.name}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active="false">Study</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb crumbs={crumbs} selected={selectedCrumb} />
         <StudyCard deck={deck} cards={deck.cards || []} />
       </div>
     );

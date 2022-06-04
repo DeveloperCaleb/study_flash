@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Breadcrumb } from "react-bootstrap";
-import { useParams, useHistory, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import Breadcrumb from "../Layout/BreadCrumb";
 import { readCard, readDeck, updateCard } from "../utils/api";
-import "./EditCardForm.css";
 
 function EditCardForm() {
   const { cardId, deckId } = useParams();
   const history = useHistory();
 
+  const [crumbs, setCrumbs] = useState([]);
   const [card, setCard] = useState({});
   const [deck, setDeck] = useState({});
 
@@ -28,6 +28,13 @@ function EditCardForm() {
     loadDeck();
   }, [cardId]);
 
+  useEffect(() => {
+    function loadCrumbs() {
+      setCrumbs(["Home", `${deck.name}`, `Edit Card ${cardId}`]);
+    }
+    loadCrumbs();
+  }, [deck]);
+
   //editCardDataForm is set to be the information of the card. This allows for the text area to have the current data for editing.
   //When a textarea is changed the value editCardDataForm is updated.
   const handleChange = ({ target }) => {
@@ -44,13 +51,17 @@ function EditCardForm() {
     history.go(-1);
   };
 
+  const selectedCrumb = (crumb) => {
+    if (crumb == "Home") {
+      history.push("/");
+    } else {
+      history.push(`/decks/${deckId}`);
+    }
+  };
+
   return (
     <div>
-      <Breadcrumb>
-        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href={`/decks/${deckId}`}>{deck.name}</Breadcrumb.Item>
-        <Breadcrumb.Item active="false">Add Card</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb crumbs={crumbs} selected={selectedCrumb} />
       <form name="editCard" onSubmit={handleSubmit}>
         <h1>Edit Card</h1>
         <br />
@@ -74,9 +85,9 @@ function EditCardForm() {
           value={card.back}
         ></textarea>
         <br />
-        <Link to={`/decks/${deckId}`}>
+        <a href={`/decks/${deckId}`}>
           <button>Cancel</button>
-        </Link>
+        </a>
         <button className="editCardSubmit" type="submit">
           Submit
         </button>

@@ -1,9 +1,6 @@
 import React from "react";
-import { Card } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { deleteDeck } from "../utils/api";
-import { FaBookReader, FaPlus, FaTrash } from "react-icons/fa";
-import "./DeckInformation.css";
 
 function DeckInformation({ deck }) {
   const history = useHistory();
@@ -19,23 +16,19 @@ function DeckInformation({ deck }) {
   };
 
   return (
-    <div>
-      <Card.Body>
-        <Card.Title>{deck.name}</Card.Title>
-        <Card.Text>{deck.description}</Card.Text>
-        <Link to={`/decks/${deck.id}/edit`}>
+    <div className="card">
+      <div className="card-body">
+        <h1 className="card-title">{deck.name}</h1>
+        <p className="card-text">{deck.description}</p>
+        <a href={`/decks/${deck.id}/edit`}>
           <button className="edit">Edit</button>
-        </Link>
-        <Link to={`/decks/${deck.id}/study`}>
-          <button className="study2">
-            <FaBookReader /> {` Study`}
-          </button>
-        </Link>
-        <Link to={`/decks/${deck.id}/cards/new`}>
-          <button className="createDeck2">
-            <FaPlus /> {` Add Cards`}
-          </button>
-        </Link>
+        </a>
+        <a href={`/decks/${deck.id}/study`}>
+          <button className="study2">Study</button>
+        </a>
+        <a href={`/decks/${deck.id}/cards/new`}>
+          <button className="createDeck2">Add Cards</button>
+        </a>
 
         <button
           className="deleteButton"
@@ -43,9 +36,9 @@ function DeckInformation({ deck }) {
           id={`${deck.id}`}
           onClick={handleClick}
         >
-          <FaTrash />
+          Delete
         </button>
-      </Card.Body>
+      </div>
     </div>
   );
 }
