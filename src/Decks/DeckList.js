@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { listDecks } from "../utils/api/index";
-
 import DeckListing from "./DeckListing";
 
 function DeckList() {
-  const history = useHistory();
-
   const [decks, setDecks] = useState([]);
 
   //Load all decks on initial render.

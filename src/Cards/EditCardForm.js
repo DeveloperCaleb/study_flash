@@ -26,14 +26,14 @@ function EditCardForm() {
 
     loadCard();
     loadDeck();
-  }, [cardId]);
+  }, [cardId, deckId]);
 
   useEffect(() => {
     function loadCrumbs() {
       setCrumbs(["Home", `${deck.name}`, `Edit Card ${cardId}`]);
     }
     loadCrumbs();
-  }, [deck]);
+  }, [deck, cardId]);
 
   //editCardDataForm is set to be the information of the card. This allows for the text area to have the current data for editing.
   //When a textarea is changed the value editCardDataForm is updated.
@@ -52,7 +52,7 @@ function EditCardForm() {
   };
 
   const selectedCrumb = (crumb) => {
-    if (crumb == "Home") {
+    if (crumb === "Home") {
       history.push("/");
     } else {
       history.push(`/decks/${deckId}`);

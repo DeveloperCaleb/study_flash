@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import Breadcrumb from "../Layout/BreadCrumb";
-import { useParams, useHistory, Link } from "react-router-dom";
-import { readDeck } from "../utils/api";
-import { updateDeck } from "../utils/api";
+import { readDeck, updateDeck } from "../utils/api";
 
 function EditDeckForm() {
   const { deckId } = useParams();
@@ -43,7 +42,7 @@ function EditDeckForm() {
     history.go(-1);
   };
   const selectedCrumb = (crumb) => {
-    if (crumb == "Home") {
+    if (crumb === "Home") {
       history.push("/");
     } else {
       history.push(`/decks/${deckId}`);

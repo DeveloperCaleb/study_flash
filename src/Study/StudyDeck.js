@@ -29,7 +29,7 @@ function StudyDeck() {
   }, [deck]);
 
   const selectedCrumb = (crumb) => {
-    if (crumb == "Home") {
+    if (crumb === "Home") {
       history.push("/");
     } else {
       history.push(`/decks/${deckId}`);
