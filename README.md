@@ -1,4 +1,4 @@
-# React Flash Card App
+# Study Flash
 
 ## About
 
